@@ -18,10 +18,6 @@ public class Jogador extends Pessoa {
 
     @Override
     public String toString() {
-        return "Jogador{" +
-                "nome=" + super.getNome() +
-                "cpf=" + super.getCpf() +
-                "posicao='" + posicao + '\'' +
-                '}';
+        return  "Jogador"+";"+super.getNome()+";"+ super.getCpf()+";"+super.getRua()+";"+this.getPosicao();
     }
 }

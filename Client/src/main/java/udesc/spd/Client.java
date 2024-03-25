@@ -9,30 +9,42 @@ import java.util.Scanner;
 
 public class Client {
     public static void main(String[] args) {
-        try (Scanner kb = new Scanner(System.in);
-             Socket socket = new Socket("localhost", 5555);
-             PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
-             BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+        try (Scanner kb = new Scanner(System.in)) {
+            System.out.println("Digite o endereço IP do servidor:");
+            String serverIP = kb.nextLine();
 
-            boolean socketAberto = true;
-            while (socketAberto) {
-                System.out.println("Insira uma mensagem para o servidor");
-                String msg = kb.nextLine();
+            try (Socket socket = new Socket(serverIP, 1234);
+                 PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+                 BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
-                // Verifica se a mensagem está no formato correto
-                if (!isValidMessage(msg)) {
-                    System.out.println("Formato de mensagem inválido. Por favor, insira novamente.");
-                    continue;
-                }
+                boolean socketAberto = true;
+                while (socketAberto) {
+                    System.out.println("Insira uma mensagem para o servidor:");
+                    String msg = kb.nextLine();
 
-                output.println(msg);
+                    // Verifica se a mensagem está no formato correto
+                    if (!isValidMessage(msg)) {
+                        System.out.println("Formato de mensagem inválido. Por favor, insira novamente.");
+                        continue;
+                    }
 
-                String serverResponse = input.readLine();
-                System.out.println(serverResponse);
+                    output.println(msg);
 
-                if (serverResponse.equals("FIM")) {
-                    System.out.println("Encerrada a comunicação com: " + socket.getInetAddress());
-                    socketAberto = false;
+                    String serverResponse = input.readLine();
+                    System.out.println(serverResponse);
+
+                    // Imprime a lista completa de pessoas se o método for "LIST"
+                    if (msg.toUpperCase().startsWith("LIST")) {
+                        int lines = Integer.parseInt(serverResponse);
+                        for (int i = 0; i < lines; i++) {
+                            System.out.println(input.readLine());
+                        }
+                    }
+
+                    if (serverResponse.equals("FIM")) {
+                        System.out.println("Encerrada a comunicação com: " + socket.getInetAddress());
+                        socketAberto = false;
+                    }
                 }
             }
         } catch (IOException e) {
@@ -41,8 +53,6 @@ public class Client {
     }
 
     private static boolean isValidMessage(String message) {
-        // Verifica se a mensagem está no formato esperado
-        // Neste exemplo, aceitamos qualquer mensagem não vazia
         return !message.isEmpty();
     }
 }

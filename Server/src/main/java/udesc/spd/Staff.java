@@ -18,10 +18,7 @@ public class Staff extends Pessoa {
 
     @Override
     public String toString() {
-        return "Jogador{" +
-                "nome=" + super.getNome() +
-                "cpf=" + super.getCpf() +
-                "cargo='" + cargo + '\'' +
-                '}';
+        return
+                "STAFF"+";"+super.getNome()+";"+ super.getCpf()+";"+super.getRua()+";"+this.getCargo();
     }
 }

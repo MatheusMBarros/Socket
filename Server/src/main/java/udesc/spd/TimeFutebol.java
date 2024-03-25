@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class TimeFutebol {
     private static ArrayList<Pessoa> pessoas;
 
-
     private String nomeTime;
     private int fundacao;
     private String cidade;
@@ -26,10 +25,18 @@ public class TimeFutebol {
         return resp;
     }
 
-    public void addPessoa(Jogador p){
+    public String getNomeTime(){
+        return this.nomeTime;
+    }
+
+    public ArrayList<Pessoa> getPessoas(){
+        return pessoas;
+    }
+
+    public void addPessoa(Pessoa p){
         pessoas.add(p);
     }
-    public void removeJogador(Jogador p ){pessoas.remove(p);}
+    public void removePessoa(Pessoa p ){pessoas.remove(p);}
 
 
     @Override
